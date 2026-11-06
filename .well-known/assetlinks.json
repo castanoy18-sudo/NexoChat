@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.nexochat.app",
+      "sha256_cert_fingerprints": [
+        "A6:90:49:CF:40:54:94:14:FD:75:35:00:FD:A1:E4:21:76:7F:62:C5:0B:E8:0E:BE:10:E0:59:57:13:47:D6:31"
+      ]
+    }
+  }
+]
