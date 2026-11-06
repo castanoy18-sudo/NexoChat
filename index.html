@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>NexoChat</title>
+<meta name="description" content="Chatea con tus amigos usando solo un usuario">
+<meta name="theme-color" content="#F6F3F3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0B0A0C" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/svg+xml" href="icons/logo.svg"><link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap">
 <style>
@@ -29,7 +36,7 @@ svg.i{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 
 .sc{position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:76px 16px 120px}
 .hd{position:absolute;top:0;left:0;right:0;z-index:3;height:70px;display:flex;align-items:center;gap:10px;padding:8px 16px 0;background:linear-gradient(var(--bg) 60%,transparent)}
-.hd svg.lg{width:30px;height:28px}.lg path{stroke:var(--mut);fill:none;stroke-dasharray:3 3;animation:da 6s linear infinite}.lg circle{fill:var(--ink)}.lg .r{fill:var(--red);animation:pu 2.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.hd svg.lg{width:30px;height:27px;flex:none;cursor:default}
 @keyframes da{to{stroke-dashoffset:-60}}@keyframes pu{50%{transform:scale(1.45)}}
 .hd h1{margin:0;background:linear-gradient(90deg,var(--ink) 55%,color-mix(in srgb,var(--ink) 45%,var(--red)));-webkit-background-clip:text;background-clip:text;color:transparent;font-size:23px;font-weight:700;letter-spacing:-.04em;white-space:nowrap;max-width:220px;overflow:hidden;transition:max-width .55s var(--e),opacity .35s var(--e)}
 .rg{margin-left:auto;display:flex;gap:8px;align-items:center}
@@ -54,9 +61,8 @@ svg.i{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .cta:hover,.cta:active{border-color:var(--red);color:var(--red)}
 .cta svg{width:30px;height:30px}
 .emp{text-align:center;color:var(--mut);padding:30px 0 0;font-size:13px}
-.emp svg{width:150px;height:70px;display:block;margin:0 auto 10px}
-.emp path{stroke:var(--line);stroke-width:2;fill:none;stroke-dasharray:4 5;animation:da 5s linear infinite}
-.emp circle{fill:var(--s2)}.emp .r{fill:var(--red);animation:pu 2.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.emp svg{width:64px;height:58px;display:block;margin:0 auto 14px}
+.emp .nx-e{stroke:var(--line);stroke-opacity:1}.emp .nx-n{fill:var(--line)}
 .card{border-radius:24px;padding:16px;margin-bottom:12px;background:var(--s1);border:1px solid var(--line)}
 .card.rd{background:linear-gradient(135deg,#B3182F,#3A0A14);color:#fff;border:0;position:relative;overflow:hidden}
 .card.rd::after{content:"";position:absolute;width:140px;height:140px;border-radius:50%;border:1.5px solid rgba(255,255,255,.2);right:-30px;top:-40px;box-shadow:0 0 0 22px rgba(255,255,255,.05),0 0 0 44px rgba(255,255,255,.03)}
@@ -141,13 +147,12 @@ svg.i{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .splash{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;background:var(--bg);background-image:radial-gradient(var(--dot) 1.2px,transparent 1.6px);background-size:22px 22px;transition:opacity .6s var(--e)}
 .splash.out{opacity:0;pointer-events:none}
 #app{transition:opacity .6s var(--e)}#app.boot{opacity:0}
-.sp-l{position:relative;width:46px;height:41px;overflow:visible}
-.sp-tri{fill:none;stroke:var(--mut);stroke-width:1.2;stroke-linejoin:round;}
-.sp-n{fill:var(--ink)}.sp-n.r{fill:var(--red)}
-.sp-c{display:flex;flex-direction:column;align-items:center;animation:spFade .7s var(--e) both}
-.sp-t{margin-top:14px;font-size:17px;font-weight:600;letter-spacing:-.02em;background:linear-gradient(90deg,var(--ink) 55%,color-mix(in srgb,var(--ink) 45%,var(--red)));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sp-l{position:relative;width:54px;height:49px}
+.sp-c{transition:transform .7s var(--e),opacity .5s var(--e)}.splash.out .sp-c{transform:scale(1.08);opacity:0}
+.sp-c{display:flex;flex-direction:column;align-items:center;animation:spFade .7s var(--e) backwards}
+.sp-t{margin-top:16px;animation:spUp .7s var(--e) .45s both;font-size:17px;font-weight:600;letter-spacing:-.02em;background:linear-gradient(90deg,var(--ink) 55%,color-mix(in srgb,var(--ink) 45%,var(--red)));-webkit-background-clip:text;background-clip:text;color:transparent}
 .sp-b{position:absolute;left:0;right:0;bottom:calc(26px + env(safe-area-inset-bottom,0px));text-align:center;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut);animation:spFade .7s var(--e) .25s both}
-@keyframes spFade{from{opacity:0}}
+@keyframes spFade{from{opacity:0}}@keyframes spUp{from{opacity:0;transform:translate3d(0,8px,0)}}
 html.rm *,html.rm *::before,html.rm *::after{animation:none!important;transition:none!important}
 *{scrollbar-width:thin;scrollbar-color:var(--line) transparent}
 #t3.on .sc>:nth-child(5){animation-delay:.28s}
@@ -177,14 +182,14 @@ html.rm *,html.rm *::before,html.rm *::after{animation:none!important;transition
 .b{max-width:min(72%,620px)}
 .row.act{box-shadow:inset 1px 1px 0 var(--gh),inset -1px -1px 0 var(--gs),0 0 0 1.5px color-mix(in srgb,var(--red) 60%,transparent),0 8px 24px var(--sh)}
 .wel{display:flex;position:absolute;top:0;bottom:0;left:var(--sw);right:0;z-index:19;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:24px;text-align:center;color:var(--mut);transition:opacity .5s var(--e),transform .6s var(--e)}
-.wel svg{width:150px;height:134px;margin-bottom:12px;overflow:visible}
-.wel path{stroke:var(--mut);stroke-width:.7;fill:none;stroke-dasharray:1.2 1.2;animation:da 20s linear infinite}
-.wel circle{fill:var(--ink)}.wel .r{fill:var(--red);animation:pu 2.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.wel svg{width:96px;height:86px;margin-bottom:18px;overflow:visible}
+.wel .nx{animation:nxf 7s ease-in-out infinite}
+@keyframes nxf{50%{transform:translate3d(0,-6px,0)}}
 .wel h2{margin:0;font-size:28px;font-weight:700;letter-spacing:-.04em;background:linear-gradient(90deg,var(--ink) 55%,color-mix(in srgb,var(--ink) 45%,var(--red)));-webkit-background-clip:text;background-clip:text;color:transparent}
 .wel p{margin:0;max-width:340px;font-size:14px}
 .wel small{margin-top:18px;font-size:11.5px;opacity:.8}
 #app.chat .wel{opacity:0;transform:scale(.97);pointer-events:none}
-#app.chat .wel path,#app.chat .wel .r{animation-play-state:paused}
+#app.chat .wel .nx,#app.chat .wel .nx *{animation-play-state:paused}
 }
 
 /* ===== NexoChat v0.2: cuentas reales (Supabase) ===== */
@@ -192,20 +197,65 @@ html.rm *,html.rm *::before,html.rm *::after{animation:none!important;transition
 .cta svg.i{width:22px;height:22px}
 .sd.p path:nth-child(2){stroke-dashoffset:12}.sd.p svg{opacity:.35}
 .vh small.off::before{background:var(--mut)}
-.auth{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;padding:20px;overflow:hidden;background:var(--bg);background-image:radial-gradient(var(--dot) 1.2px,transparent 1.6px);background-size:22px 22px}
+.auth{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;padding:24px;overflow:hidden;background:var(--bg);background-image:radial-gradient(var(--dot) 1.2px,transparent 1.6px);background-size:22px 22px}
 .auth.on{display:flex}
-.auth::before{content:"";position:absolute;inset:-25%;pointer-events:none;background:radial-gradient(circle at 22% 18%,rgba(212,42,68,.2),transparent 38%),radial-gradient(circle at 82% 62%,rgba(120,150,255,.16),transparent 42%),radial-gradient(circle at 40% 95%,rgba(212,42,68,.12),transparent 40%);animation:amb 22s ease-in-out infinite alternate;will-change:transform}
-.ai{position:relative;z-index:1;box-sizing:border-box;width:min(380px,100%);max-height:100%;overflow-y:auto;border-radius:28px;padding:26px 22px 22px;background:var(--s1);border:1px solid var(--line);box-shadow:0 20px 60px var(--sh);text-align:center;animation:rin .8s var(--e) both}
-.ai svg.lg{width:44px;height:40px;display:block;margin:0 auto 8px;overflow:visible}
-.ai h2{margin:0;font-size:26px;font-weight:700;letter-spacing:-.04em;background:linear-gradient(90deg,var(--ink) 55%,color-mix(in srgb,var(--ink) 45%,var(--red)));-webkit-background-clip:text;background-clip:text;color:transparent}
-.ai .as{margin:6px 0 16px;color:var(--mut);font-size:13px}
-.ai form{text-align:left;margin-top:16px}
-.ai label{display:block;font-size:12px;font-weight:600;color:var(--mut);margin:0 0 12px}
-.fi{display:block;width:100%;box-sizing:border-box;height:48px;margin-top:6px;padding:0 14px;border:1.5px solid transparent;border-radius:15px;background:var(--s2);color:var(--ink);font:inherit;font-size:16px;outline:0;transition:border-color .3s var(--e)}
-.fi:focus{border-color:color-mix(in srgb,var(--red) 70%,transparent)}
-.ae{min-height:18px;margin:-2px 0 10px;font-size:12.5px;font-weight:600;color:var(--red);line-height:1.35}
+.auth::before{content:"";position:absolute;inset:-25%;pointer-events:none;opacity:.55;background:radial-gradient(circle at 22% 18%,rgba(212,42,68,.2),transparent 38%),radial-gradient(circle at 82% 62%,rgba(120,150,255,.14),transparent 42%);animation:amb 22s ease-in-out infinite alternate;will-change:transform}
+.ai{position:relative;z-index:1;box-sizing:border-box;width:min(360px,100%);max-height:100%;overflow-y:auto;text-align:left}
+.auth:not(.go) .ai>*{opacity:0}
+.auth.go .ai>*{animation:rin .75s var(--e) both}
+.auth.go .ai>:nth-child(2){animation-delay:.12s}.auth.go .ai>:nth-child(3){animation-delay:.17s}.auth.go .ai>:nth-child(4){animation-delay:.24s}.auth.go .ai>:nth-child(5){animation-delay:.32s}
+.abr{display:flex;align-items:center;gap:10px;margin-bottom:34px;font-weight:600;font-size:15px;letter-spacing:-.02em}
+.abr svg{width:30px;height:27px}
+.ai h2{margin:0;font-size:30px;line-height:1.1;font-weight:700;letter-spacing:-.045em;color:var(--ink)}
+.ai .as{margin:8px 0 26px;color:var(--mut);font-size:14px;line-height:1.45}
+.fl{margin-bottom:14px}
+.fl label{display:block;font-size:13px;font-weight:600;margin:0 0 7px 2px;transition:color .3s var(--e)}
+.fl:focus-within label{color:var(--red)}
+.fw{position:relative;display:block}
+.fw i{position:absolute;left:15px;top:0;line-height:50px;font-style:normal;font-weight:600;color:var(--mut);pointer-events:none;transition:color .3s var(--e)}
+.fl:focus-within .fw i{color:var(--ink)}
+.auth .fi{height:50px;margin:0;border-radius:14px;border-width:1.5px;transition:border-color .3s var(--e),background-color .3s var(--e),box-shadow .3s var(--e)}
+.fw i+.fi{padding-left:33px}#ap{padding-right:64px}
+.auth .fi:focus{background:var(--s1);border-color:var(--red);box-shadow:0 0 0 4px color-mix(in srgb,var(--red) 14%,transparent)}
+.auth .fi,.auth .fi:focus{color:var(--ink);-webkit-text-fill-color:var(--ink);caret-color:var(--ink)}.auth .fi:not(:focus){background:var(--s1)}
+.auth .fi:-webkit-autofill,.auth .fi:-webkit-autofill:hover,.auth .fi:-webkit-autofill:focus{-webkit-text-fill-color:var(--ink);-webkit-box-shadow:0 0 0 1000px var(--s1) inset;box-shadow:0 0 0 1000px var(--s1) inset;caret-color:var(--ink);transition:background-color 9999s}
+.auth .fi::placeholder{color:var(--mut);-webkit-text-fill-color:var(--mut);opacity:1}
+.eye{position:absolute;right:6px;top:7px;height:36px;padding:0 12px;border-radius:10px;font-size:12.5px;font-weight:600;color:var(--mut);transition:color .25s,background-color .25s}
+.eye:hover,.eye[aria-pressed="true"]{color:var(--ink);background:color-mix(in srgb,var(--ink) 7%,transparent)}
+.hn{display:block;max-height:0;overflow:hidden;opacity:0;font-size:12px;line-height:1.35;color:var(--mut);margin:0 2px;transition:max-height .45s var(--e),opacity .3s var(--e),margin .45s var(--e)}
+.up .hn{max-height:40px;opacity:1;margin-top:7px}
+.ae{min-height:18px;margin:2px 0 10px;font-size:12.5px;font-weight:600;color:var(--red);line-height:1.35}
 .ab{display:block;width:100%;height:48px;border-radius:16px;color:#fff;font-weight:600;background:linear-gradient(135deg,#F0475F,#C01E37);box-shadow:inset 1px 1px 0 rgba(255,255,255,.4),0 8px 20px rgba(212,42,68,.4);transition:transform .4s var(--sp),opacity .3s}
 .ab:active{transform:scale(.97)}.ab:disabled{opacity:.6;cursor:default}
+.auth .ab{position:relative;height:50px;border-radius:14px;background:var(--red);box-shadow:0 1px 0 rgba(0,0,0,.12),0 6px 16px color-mix(in srgb,var(--red) 28%,transparent);transition:transform .35s var(--sp),background-color .25s,box-shadow .3s var(--e)}
+.auth .ab span{display:inline-block;transition:opacity .2s,transform .35s var(--e)}
+.auth .ab.ld{opacity:1}.auth .ab.ld span{opacity:0;transform:scale(.9)}
+.auth .ab.ld::after{content:"";position:absolute;left:50%;top:50%;width:18px;height:18px;margin:-11px 0 0 -11px;border-radius:50%;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(1turn)}}
+@keyframes shk{20%{transform:translateX(-5px)}40%{transform:translateX(4px)}60%{transform:translateX(-2px)}80%{transform:translateX(1px)}}
+.ae.sh{animation:shk .4s ease-out}
+.asw{margin:26px 0 0;padding-top:18px;border-top:1px solid var(--line);text-align:center;font-size:13.5px;color:var(--mut)}
+.asw button{color:var(--red);font-weight:600;position:relative}
+.asw button::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:1.5px;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform .35s var(--e)}
+.asw button:hover::after{transform:none}
+@media (hover:hover){.auth .ab:not(:disabled):hover{background:color-mix(in srgb,var(--red) 88%,#000)}}
+@media (min-width:600px){.ai{width:400px;padding:36px 34px 28px;border-radius:26px;background:var(--s1);border:1px solid var(--line);box-shadow:0 1px 2px rgba(0,0,0,.04),0 24px 48px -24px var(--sh)}.auth .fi:focus{background:var(--bg)}}
+/* Logo NexoChat: tres nodos conectados, el de arriba en rojo */
+.nx{overflow:visible}
+.nx-e{fill:none;stroke:var(--ink);stroke-opacity:.4;stroke-width:3.2;stroke-linecap:round}
+.nx-n{fill:var(--ink)}.nx-r{fill:var(--red)}
+.nx-n,.nx-r,.nx-p{transform-box:fill-box;transform-origin:center}
+.nx-r{transition:transform .5s var(--sp)}
+.nx-p{fill:none;stroke:var(--red);stroke-width:1.5;opacity:0;animation:nxp 3.6s var(--e) 1.4s infinite}
+@keyframes nxp{0%{opacity:.75;transform:scale(1)}55%,100%{opacity:0;transform:scale(2.4)}}
+.hd .nx:hover .nx-r{transform:translate3d(0,-1.5px,0) scale(1.12)}
+.splash .dw .nx-n,.splash .dw .nx-r,.auth.go .dw .nx-n,.auth.go .dw .nx-r{animation:nxs .6s var(--sp) both}
+.dw .nx-n:nth-of-type(2){animation-delay:.08s}.dw .nx-r{animation-delay:.18s!important}
+.splash .dw .nx-e,.auth.go .dw .nx-e{stroke-dasharray:1;animation:nxd .55s var(--e) both}
+.dw .nx-e:nth-of-type(1){animation-delay:.3s}.dw .nx-e:nth-of-type(2){animation-delay:.36s}.dw .nx-e:nth-of-type(3){animation-delay:.42s}
+@keyframes nxs{from{transform:scale(0)}}
+@keyframes nxd{from{stroke-dashoffset:1}}
+.tab:not(.on) .nx-p,.open .pages .nx-p,.pz .nx-p,.pz .wel .nx{animation-play-state:paused}
 .ghost{display:block;width:100%;height:48px;border-radius:16px;background:var(--s2);color:var(--ink);font-weight:600}
 .out{display:block;width:100%;height:46px;border-radius:15px;color:var(--red);font-weight:600;background:color-mix(in srgb,var(--red) 10%,transparent)}
 .sheet{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.38);opacity:0;visibility:hidden;transition:opacity .35s var(--e),visibility 0s .35s}
@@ -215,18 +265,20 @@ html.rm *,html.rm *::before,html.rm *::after{animation:none!important;transition
 .shc h3{margin:0 0 4px;font-size:18px}.shc p{margin:0 0 14px;color:var(--mut);font-size:13px}
 .at{position:relative;margin-bottom:12px}.at span{position:absolute;left:14px;top:0;line-height:48px;color:var(--mut);font-weight:600}.at .fi{margin-top:0;padding-left:30px}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+/* iOS: con menos de 16px Safari hace zoom al enfocar un campo */
+input,textarea,select{font-size:16px!important}
 </style>
 </head>
 <body>
-<div class="splash" id="splash"><div class="sp-c"><svg class="sp-l" viewBox="0 0 38 34" aria-hidden="true"><path class="sp-tri" d="M8 26 19 8 30 26Z"/><circle class="sp-n" cx="8" cy="26" r="2"/><circle class="sp-n" cx="30" cy="26" r="2"/><circle class="sp-n r" cx="19" cy="8" r="2.4"/></svg><div class="sp-t">NexoChat</div></div><div class="sp-b">beta version</div></div>
+<div class="splash" id="splash"><div class="sp-c"><svg class="nx sp-l dw" viewBox="0 0 40 36" aria-hidden="true"><path class="nx-e" pathLength="1" d="M15.98 13.8 10.61 22.89"/><path class="nx-e" pathLength="1" d="M24.02 13.8 29.39 22.89"/><path class="nx-e" pathLength="1" d="M14.1 29h11.8"/><circle class="nx-n" cx="7" cy="29" r="4.2"/><circle class="nx-n" cx="33" cy="29" r="4.2"/><circle class="nx-p" cx="20" cy="7" r="5"/><circle class="nx-r" cx="20" cy="7" r="5"/></svg><div class="sp-t">NexoChat</div></div><div class="sp-b">beta version</div></div>
 <div id="app" class="boot">
  <div class="pages" id="pages">
-  <section class="tab on" id="t2"><div class="hd" id="hd"><svg class="lg" viewBox="0 0 38 34" aria-hidden="true"><path d="M8 26 19 8 30 26Z" stroke-width="2"/><circle cx="8" cy="26" r="4.5"/><circle class="r" cx="19" cy="8" r="5"/><circle cx="30" cy="26" r="4.5"/></svg><h1>NexoChat</h1>
+  <section class="tab on" id="t2"><div class="hd" id="hd"><svg class="nx lg" viewBox="0 0 40 36" aria-hidden="true"><path class="nx-e" pathLength="1" d="M15.98 13.8 10.61 22.89"/><path class="nx-e" pathLength="1" d="M24.02 13.8 29.39 22.89"/><path class="nx-e" pathLength="1" d="M14.1 29h11.8"/><circle class="nx-n" cx="7" cy="29" r="4.2"/><circle class="nx-n" cx="33" cy="29" r="4.2"/><circle class="nx-p" cx="20" cy="7" r="5"/><circle class="nx-r" cx="20" cy="7" r="5"/></svg><h1>NexoChat</h1>
     <div class="rg"><input class="sin" id="q" placeholder="Buscar" autocomplete="off" aria-label="Buscar"><button class="gb g" id="sb" aria-label="Buscar"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg></button></div></div>
    <div class="sc"><div id="chats" class="st"></div>
     <button class="cta" id="newc"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Nuevo chat</button>
-    <div class="emp"><svg viewBox="0 0 150 70" aria-hidden="true"><path d="M20 50 75 18 130 50"/><circle cx="20" cy="50" r="7"/><circle class="r" cx="75" cy="18" r="8"/><circle cx="130" cy="50" r="7"/></svg>Tus conexiones aparecen aquí</div></div></section>
-  <section class="tab" id="t3"><div class="hd"><svg class="lg" viewBox="0 0 38 34" aria-hidden="true"><path d="M8 26 19 8 30 26Z" stroke-width="2"/><circle cx="8" cy="26" r="4.5"/><circle class="r" cx="19" cy="8" r="5"/><circle cx="30" cy="26" r="4.5"/></svg><h1>Yo</h1></div>
+    <div class="emp"><svg class="nx em" viewBox="0 0 40 36" aria-hidden="true"><path class="nx-e" pathLength="1" d="M15.98 13.8 10.61 22.89"/><path class="nx-e" pathLength="1" d="M24.02 13.8 29.39 22.89"/><path class="nx-e" pathLength="1" d="M14.1 29h11.8"/><circle class="nx-n" cx="7" cy="29" r="4.2"/><circle class="nx-n" cx="33" cy="29" r="4.2"/><circle class="nx-p" cx="20" cy="7" r="5"/><circle class="nx-r" cx="20" cy="7" r="5"/></svg>Tus conexiones aparecen aquí</div></div></section>
+  <section class="tab" id="t3"><div class="hd"><svg class="nx lg" viewBox="0 0 40 36" aria-hidden="true"><path class="nx-e" pathLength="1" d="M15.98 13.8 10.61 22.89"/><path class="nx-e" pathLength="1" d="M24.02 13.8 29.39 22.89"/><path class="nx-e" pathLength="1" d="M14.1 29h11.8"/><circle class="nx-n" cx="7" cy="29" r="4.2"/><circle class="nx-n" cx="33" cy="29" r="4.2"/><circle class="nx-p" cx="20" cy="7" r="5"/><circle class="nx-r" cx="20" cy="7" r="5"/></svg><h1>Yo</h1></div>
    <div class="sc"><div class="card rd hero"><div class="av" id="yav" style="width:64px;height:64px;font-size:26px;border-radius:22px">Y</div><div><b id="yn" style="font-size:19px">Yo</b><div style="opacity:.8;font-size:13px">Conectado</div></div></div>
     <div class="stats"><div class="g"><b id="s1">0</b><small>Chats</small></div><div class="g"><b id="s2">0</b><small>Sin leer</small></div><div class="g"><b>v0.2</b><small>Beta</small></div></div>
     <div class="card"><b>Tema</b><div class="seg" id="seg"><button class="on" data-v="auto">Auto</button><button data-v="light">Claro</button><button data-v="dark">Oscuro</button></div></div>
@@ -236,7 +288,7 @@ html.rm *,html.rm *::before,html.rm *::after{animation:none!important;transition
  </div>
  <nav class="dock g" id="dock"></nav>
  <div class="toast g" id="toast"></div>
- <div class="wel" id="wel"><svg class="wl" viewBox="0 0 38 34" aria-hidden="true"><path d="M8 26 19 8 30 26Z"/><circle cx="8" cy="26" r="2.6"/><circle class="r" cx="19" cy="8" r="3"/><circle cx="30" cy="26" r="2.6"/></svg><h2>NexoChat Web</h2><p>Elige un chat de la izquierda o toca «Nuevo chat» para escribirle a un amigo por su usuario.</p><small>Enter para enviar · Esc para cerrar el chat · Ctrl+K para buscar</small></div>
+ <div class="wel" id="wel"><svg class="nx wl" viewBox="0 0 40 36" aria-hidden="true"><path class="nx-e" pathLength="1" d="M15.98 13.8 10.61 22.89"/><path class="nx-e" pathLength="1" d="M24.02 13.8 29.39 22.89"/><path class="nx-e" pathLength="1" d="M14.1 29h11.8"/><circle class="nx-n" cx="7" cy="29" r="4.2"/><circle class="nx-n" cx="33" cy="29" r="4.2"/><circle class="nx-p" cx="20" cy="7" r="5"/><circle class="nx-r" cx="20" cy="7" r="5"/></svg><h2>NexoChat Web</h2><p>Elige un chat de la izquierda o toca «Nuevo chat» para escribirle a un amigo por su usuario.</p><small>Enter para enviar · Esc para cerrar el chat · Ctrl+K para buscar</small></div>
  <div class="view" id="view">
   <div class="vh"><button class="gb g" id="back" aria-label="Volver"><svg class="i" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></button><div class="av" id="vav"></div><div style="flex:1;min-width:0"><b id="vn"></b><small id="vs">en línea</small></div></div>
   <div class="msgs" id="msgs"></div>
@@ -247,15 +299,15 @@ html.rm *,html.rm *::before,html.rm *::after{animation:none!important;transition
 </div>
 
 <div class="auth" id="auth"><div class="ai">
- <svg class="lg" viewBox="0 0 38 34" aria-hidden="true"><path d="M8 26 19 8 30 26Z" stroke-width="2"/><circle cx="8" cy="26" r="4.5"/><circle class="r" cx="19" cy="8" r="5"/><circle cx="30" cy="26" r="4.5"/></svg>
- <h2>NexoChat</h2><p class="as">Chatea con tus amigos usando solo un usuario</p>
- <div class="seg" id="aseg"><button class="on" data-m="in" type="button">Entrar</button><button data-m="up" type="button">Crear cuenta</button></div>
+ <div class="abr"><svg class="nx dw" viewBox="0 0 40 36" aria-hidden="true"><path class="nx-e" pathLength="1" d="M15.98 13.8 10.61 22.89"/><path class="nx-e" pathLength="1" d="M24.02 13.8 29.39 22.89"/><path class="nx-e" pathLength="1" d="M14.1 29h11.8"/><circle class="nx-n" cx="7" cy="29" r="4.2"/><circle class="nx-n" cx="33" cy="29" r="4.2"/><circle class="nx-p" cx="20" cy="7" r="5"/><circle class="nx-r" cx="20" cy="7" r="5"/></svg><span>NexoChat</span></div>
+ <h2 id="atl">Hola de nuevo</h2><p class="as" id="asu">Entra con tu usuario para seguir la conversación.</p>
  <form id="af" novalidate>
-  <label>Usuario<input class="fi" id="au" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" maxlength="20" placeholder="tu_usuario"></label>
-  <label>Contraseña<input class="fi" id="ap" type="password" autocomplete="current-password" placeholder="Mínimo 6 caracteres"></label>
+  <div class="fl"><label for="au">Usuario</label><span class="fw"><i>@</i><input class="fi" id="au" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" maxlength="20" placeholder="tu_usuario"></span><small class="hn" id="ahn">Así te encontrarán tus amigos. Letras, números y _</small></div>
+  <div class="fl"><label for="ap">Contraseña</label><span class="fw"><input class="fi" id="ap" type="password" autocomplete="current-password" placeholder="••••••"><button class="eye" id="aey" type="button" aria-label="Mostrar contraseña" aria-pressed="false">Ver</button></span></div>
   <div class="ae" id="ae" role="alert"></div>
-  <button class="ab" id="ab" type="submit">Entrar</button>
+  <button class="ab" id="ab" type="submit"><span id="abt">Entrar</span></button>
  </form>
+ <p class="asw"><span id="asq">¿No tienes cuenta?</span> <button type="button" id="asb">Crea una</button></p>
 </div></div>
 
 <div class="sheet" id="sheet"><div class="shc">
@@ -449,12 +501,19 @@ MSG.addEventListener('pointerup',qEnd);MSG.addEventListener('pointercancel',qEnd
 MSG.addEventListener('click',e=>{if(sup){e.stopPropagation();sup=0}},true);
 
 /* ---------- Cuenta: entrar, crear cuenta y salir ---------- */
-let AM='in';
-const authErr=s=>{$('ae').textContent=s||''};
-function showAuth(on){$('auth').classList.toggle('on',on);if(on)setTimeout(()=>$('au').focus({preventScroll:true}),on?400:0)}
-$('aseg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;AM=b.dataset.m;
- document.querySelectorAll('#aseg button').forEach(x=>x.classList.toggle('on',x==b));
- $('ab').textContent=AM=='up'?'Crear cuenta':'Entrar';$('ap').autocomplete=AM=='up'?'new-password':'current-password';authErr('')});
+let AM='in',SPD=false;
+const authErr=s=>{const e=$('ae');e.textContent=s||'';e.classList.remove('sh');if(s&&!calm){void e.offsetWidth;e.classList.add('sh')}};
+function showAuth(on){const a=$('auth');a.classList.toggle('on',on);a.classList.remove('go');if(!on)return;
+ const run=()=>{void a.offsetWidth;a.classList.add('go');setTimeout(()=>$('au').focus({preventScroll:true}),calm?0:550)};
+ SPD?run():document.addEventListener('nx:sp',run,{once:true})}
+const AUTH_TX={in:['Hola de nuevo','Entra con tu usuario para seguir la conversación.','Entrar','¿No tienes cuenta?','Crea una'],
+ up:['Crea tu cuenta','Solo necesitas un usuario y una contraseña. Nada de correos.','Crear cuenta','¿Ya tienes cuenta?','Entra']};
+function setMode(m){AM=m;const t=AUTH_TX[m];$('atl').textContent=t[0];$('asu').textContent=t[1];$('abt').textContent=t[2];$('asq').textContent=t[3];$('asb').textContent=t[4];
+ $('ap').autocomplete=m=='up'?'new-password':'current-password';$('ap').placeholder=m=='up'?'Mínimo 6 caracteres':'••••••';$('af').classList.toggle('up',m=='up');authErr('');
+ if(!calm)[$('atl'),$('asu'),$('abt')].forEach((el,i)=>el.animate([{opacity:0,transform:'translate3d(0,6px,0)'},{opacity:1,transform:'none'}],{duration:420,delay:i*40,easing:'cubic-bezier(.22,1,.36,1)',fill:'backwards'}));
+ $('au').focus({preventScroll:true})}
+$('asb').onclick=()=>setMode(AM=='in'?'up':'in');
+$('aey').onclick=()=>{const p=$('ap'),v=p.type=='password';p.type=v?'text':'password';$('aey').textContent=v?'Ocultar':'Ver';$('aey').setAttribute('aria-pressed',v);$('aey').setAttribute('aria-label',v?'Ocultar contraseña':'Mostrar contraseña')};
 function mapErr(e){const m=((e&&e.message)||'').toLowerCase();
  if(m.includes('already registered')||m.includes('already been registered')||m.includes('database error saving'))return'Ese usuario ya existe o no está disponible';
  if(m.includes('invalid login'))return'Usuario o contraseña incorrectos';
@@ -466,9 +525,9 @@ $('af').addEventListener('submit',async e=>{e.preventDefault();if(!sb)return aut
  const u=$('au').value.trim().toLowerCase().replace(/^@/,''),p=$('ap').value;
  if(!USER_RE.test(u))return authErr('Usuario: de 3 a 20 letras (sin tildes), números o _');
  if(p.length<6)return authErr('La contraseña debe tener al menos 6 caracteres');
- authErr('');$('ab').disabled=true;let r;
+ authErr('');$('ab').disabled=true;$('ab').classList.add('ld');let r;
  try{r=AM=='up'?await sb.auth.signUp({email:u+'@'+EMAIL_DOMAIN,password:p,options:{data:{username:u}}}):await sb.auth.signInWithPassword({email:u+'@'+EMAIL_DOMAIN,password:p})}catch(x){r={error:x}}
- $('ab').disabled=false;
+ $('ab').disabled=false;$('ab').classList.remove('ld');
  if(r.error)return authErr(mapErr(r.error));
  if(!r.data||!r.data.session)return authErr('Cuenta creada, pero Supabase pide confirmar el correo. Apaga "Confirm email" en Authentication → Sign In / Providers → Email.');
  $('ap').value='';enter(r.data.user)});
@@ -503,7 +562,7 @@ document.addEventListener('keydown',e=>{
  else if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'&&ME){e.preventDefault();tab(0);const h=$('hd');h.classList.contains('s')?$('q').focus():$('sb').click()}});
 
 /* ---------- Arranque ---------- */
-(()=>{const sp=$('splash'),ap=$('app');let d=0;const go=()=>{if(d)return;d=1;sp.classList.add('out');ap.classList.remove('boot');setTimeout(()=>sp.remove(),700)};setTimeout(go,calm?500:1500);sp.addEventListener('click',go)})();
+(()=>{const sp=$('splash'),ap=$('app');let d=0;const go=()=>{if(d)return;d=1;sp.classList.add('out');ap.classList.remove('boot');SPD=true;document.dispatchEvent(new Event('nx:sp'));setTimeout(()=>sp.remove(),700)};setTimeout(go,calm?500:1700);sp.addEventListener('click',go)})();
 (async()=>{
  if(!window.supabase){showAuth(true);authErr('No se pudo cargar el servidor. Revisa tu conexión y recarga.');return}
  sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true}});
@@ -511,5 +570,6 @@ document.addEventListener('keydown',e=>{
  let s=null;try{s=(await sb.auth.getSession()).data.session}catch(e){}
  s?enter(s.user):showAuth(true)})();
 </script>
+<script>if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script>
 </body>
 </html>
