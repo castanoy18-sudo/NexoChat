@@ -62,7 +62,7 @@ onUpd=function(r){if(!ME||!OPEN||curId!==r.conversation_id)return;const e=el(r.i
  if((r.hidden_for||[]).includes(ME.id)){MS=MS.filter(x=>x.id!==r.id);if(e)e.remove();return}
  const m=MS.find(x=>x.id===r.id);if(!m)return;
  m.k=r.read_at?'r':'s';m.r=rOf(r);
- if(r.deleted&&!m.del){m.del=true;m.t=r.body;m.r={};if(e)e.outerHTML=bub(m);loadChats();return}
+ if(r.deleted&&!m.del){m.del=true;m.t=r.body;m.r={};const sw=()=>{const y=el(r.id);if(y)y.outerHTML=bub(m)};if(e&&window.nxBoom)window.nxBoom(e,false,sw);else sw();loadChats();return}
  if(!e)return;if(m.me)setK(e,m,m.k);rx(e,m)};
 const _open=open;open=function(...a){closeMenu();return _open.apply(this,a)};
 
@@ -75,12 +75,15 @@ async function copy(t){try{await navigator.clipboard.writeText(t)}catch(_){
   const a=document.createElement('textarea');a.value=t;a.style.cssText='position:fixed;opacity:0';document.body.appendChild(a);a.select();
   try{document.execCommand('copy')}catch(__){}a.remove()}toast('Copiado')}
 async function del(m,all){const x=el(m.id);
- if(all){const o={t:m.t,r:m.r};m.del=true;m.t='Mensaje eliminado';m.r={};if(x)x.outerHTML=bub(m);
+ if(all){const o={t:m.t,r:m.r};m.del=true;m.t='Mensaje eliminado';m.r={};
+  const sw=()=>{const y=el(m.id);if(y)y.outerHTML=bub(m)};if(x&&window.nxBoom)window.nxBoom(x,false,sw);else sw();
   const {error}=await sb.rpc('delete_message',{p_id:m.id,p_all:true});
   if(error){console.error(error);Object.assign(m,{del:false,t:o.t,r:o.r});const y=el(m.id);if(y)y.outerHTML=bub(m);toast('No se pudo eliminar');return}
   loadChats()}
- else{const fin=()=>{MS=MS.filter(z=>z.id!==m.id);const bx=$('msgs'),s=bx.scrollTop;renderMsgs();bx.scrollTop=s};
-  if(x&&!calm)x.animate([{opacity:1,transform:'scale(1)'},{opacity:0,transform:'scale(.85)'}],{duration:220,easing:'ease-in',fill:'forwards'}).onfinish=fin;else fin();
+ else{const fin=()=>{MS=MS.filter(z=>z.id!==m.id);const y=el(m.id);
+   if(y){const p=y.previousElementSibling,n=y.nextElementSibling;y.remove();if(p&&p.classList.contains('day')&&(!n||n.classList.contains('day')))p.remove()}
+   if(!MS.length)renderMsgs()};
+  if(x&&window.nxBoom)window.nxBoom(x,true,fin);else fin();
   const {error}=await sb.rpc('delete_message',{p_id:m.id,p_all:false});
   if(error){console.error(error);toast('No se pudo eliminar');if(curId)loadMsgs(curId)}}}
 
