@@ -2,7 +2,7 @@
    - Guarda la "carcasa" de la app para que abra al instante.
    - NO toca las llamadas a Supabase: los mensajes siempre van directo a internet.
    - Sube el número de VERSION si cambias iconos o archivos fijos. */
-const VERSION = 'nexochat-v4';
+const VERSION = 'nexochat-v5';
 const SHELL = ['./', 'index.html', 'manifest.json', 'icons/icon-192.png', 'icons/icon-512.png', 'app.js'];
 const CDN = /(^|\.)(cdn\.jsdelivr\.net|unpkg\.com|fonts\.googleapis\.com|fonts\.gstatic\.com)$/;
 
